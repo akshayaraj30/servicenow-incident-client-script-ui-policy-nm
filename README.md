@@ -1,73 +1,92 @@
-# ServiceNow Incident Management – Client Script & UI Policy
+# 🚀 Naan Mudhalvan
 
-## 📌 Project Title
+# PROJECT: IMPLEMENT CLIENT SCRIPT & UI POLICY
 
-**Implement Client Script & UI Policy (Incident)**
+### *Powered by ServiceNow Incident Management*
 
----
-
-## 📖 Project Overview
-
-This project demonstrates the implementation of **Client Scripts** and **UI Policies** in ServiceNow Incident Management.
-
-The project focuses on controlling Incident form behavior dynamically based on field values. It implements conditional mandatory fields, read-only controls, automatic field updates, save-time validation, and restrictions on list editing.
-
-The implementation is designed to improve **data integrity, validation, and user experience** while creating and updating Incident records.
+![ServiceNow](https://img.shields.io/badge/Platform-ServiceNow-107C41?style=for-the-badge&logo=servicenow&logoColor=white)
+![Client Script](https://img.shields.io/badge/Configuration-Client%20Script-FF6F00?style=for-the-badge)
+![UI Policy](https://img.shields.io/badge/Configuration-UI%20Policy-0078D4?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
 
 ---
 
-## 🎯 Objective
+## 📌 Project Metadata
 
-The main objective of this project is to demonstrate how ServiceNow client-side configurations can be used to:
-
-- Enforce data integrity
-- Dynamically make fields mandatory
-- Automatically populate field values
-- Control field behavior based on conditions
-- Validate data before saving an Incident
-- Restrict unwanted list-based modifications
-- Improve Incident form usability
-
----
-
-## 🛠️ Platform & Technologies
-
-- **Platform:** ServiceNow
-- **Application:** Incident Management
-- **Table:** Incident
-- **Configuration Types:**
-  - UI Policy
-  - UI Policy Action
-  - Client Script
-- **Client Script Types:**
-  - onChange
-  - onSubmit
-  - onCellEdit
+| **Attribute** | **Details** |
+|---|---|
+| **Project Title** | Implement Client Script & UI Policy (Incident) |
+| **Course / Module** | ServiceNow System Administrator |
+| **Platform** | ServiceNow |
+| **Application** | Incident Management |
+| **Table** | Incident |
+| **Team Lead** | 👩‍💻 **Akshaya B** |
+| **Team Member** | Madhusri S T |
 
 ---
 
-# ⚙️ Project Features
+## 🎯 1. Project Overview & Objective
 
-The project implements the following features:
+### The Challenge
 
-1. High Impact Control using UI Policy
-2. Urgency field read-only control
-3. Automatic Urgency update using onChange Client Script
-4. Assigned To validation using onSubmit Client Script
-5. State list-edit blocking using onCellEdit Client Script
-6. Complete functional testing of all configurations
+Incident management requires proper validation and control of incident information. Without appropriate client-side controls, users may enter incomplete information, modify important fields incorrectly, or make unwanted changes directly from list views.
+
+### The Solution
+
+This project implements **ServiceNow UI Policies and Client Scripts** to dynamically control Incident form behavior.
+
+The solution provides:
+
+- Conditional mandatory fields
+- Read-only field control
+- Automatic field updates
+- Save-time validation
+- List-edit restrictions
+- Improved data integrity and user experience
 
 ---
 
-# 🔹 Task 1 – High Impact Control UI Policy
+## ✨ 2. Key Features & Functionality
 
-## Purpose
+- 🔐 **Conditional Mandatory Fields**  
+  Assignment Group becomes mandatory when Impact is set to High.
 
-A UI Policy named **High Impact Control** was created for the Incident table.
+- 🔒 **Read-Only Field Control**  
+  Urgency becomes read-only for High Impact Incidents.
 
-The policy is triggered when the Incident **Impact** field is set to **1 – High**.
+- ⚡ **Automatic Field Update**  
+  Urgency is automatically set to High when Impact is changed to High.
 
-When the condition is satisfied, the **Assignment Group** field becomes mandatory.
+- ✅ **Save-Time Validation**  
+  High Impact Incidents cannot be saved when Assigned To is empty.
+
+- 🚫 **List Edit Restriction**  
+  State changes through direct list editing are blocked.
+
+- 📝 **Form-Based State Update**  
+  Users can update Incident State through the Incident form.
+
+- 🧪 **Functional Testing**  
+  All implemented configurations were tested using multiple validation scenarios.
+
+---
+
+## 🛠️ 3. Technology Stack
+
+- 🟢 **Platform:** `ServiceNow`
+- 🔵 **Application:** `Incident Management`
+- 🟠 **Table:** `Incident`
+- 🟣 **Configuration:** `UI Policy`
+- 🟡 **Validation & Automation:** `Client Scripts`
+- 🔹 **Client Script Types:** `onChange`, `onSubmit`, `onCellEdit`
+
+---
+
+# ⚙️ 4. Implementation
+
+## 🔹 Task 1 – High Impact Control UI Policy
+
+A UI Policy named **High Impact Control** was created on the Incident table.
 
 ### Configuration
 
@@ -76,37 +95,71 @@ When the condition is satisfied, the **Assignment Group** field becomes mandator
 | Name | High Impact Control |
 | Table | Incident |
 | Active | True |
-| Condition | Impact is 1 – High |
-| Reverse if false | True |
+| Condition | Impact is 1 - High |
+| Reverse if False | True |
 
-### UI Policy Action
+### Functionality
 
-The UI Policy Action makes:
+When:
 
-**Assignment Group → Mandatory**
+`Impact = High`
 
-This ensures that an Incident with high impact contains an appropriate Assignment Group.
+the **Assignment Group** field becomes mandatory.
+
+When the Impact condition is no longer true, the policy is reversed.
 
 ---
 
-# 🔹 Task 2 – UI Policy Action – Urgency
+## 🔹 Task 2 – Urgency UI Policy Action
 
-An additional UI Policy Action was created under the **High Impact Control** UI Policy.
-
-When Impact is High, the **Urgency** field becomes read-only.
+A UI Policy Action was created under **High Impact Control**.
 
 ### Configuration
 
 | Property | Value |
 |---|---|
-| UI Policy | High Impact Control |
 | Field | Urgency |
 | Read-only | True |
 | Visible | Unchanged |
 
-### Expected Behavior
+### Functionality
 
-When:
+When Impact is High:
 
-```text
-Impact = High
+`Urgency → Read Only`
+
+When Impact changes to another value:
+
+`Urgency → Editable`
+
+---
+
+## 🔹 Task 3 – Auto Set Urgency Using onChange Client Script
+
+An **onChange Client Script** was created for the Impact field.
+
+### Configuration
+
+| Property | Value |
+|---|---|
+| Name | Auto set urgency for high impact |
+| Table | Incident |
+| Type | onChange |
+| Field | Impact |
+| Active | True |
+
+### Script
+
+```javascript
+function onChange(control, oldValue, newValue, isLoading) {
+    if (isLoading || newValue == '') {
+        return;
+    }
+
+    if (newValue == '1') {
+        g_form.setValue('urgency', '1');
+        g_form.addInfoMessage(
+            'Urgency set to High for High impact incident.'
+        );
+    }
+}
